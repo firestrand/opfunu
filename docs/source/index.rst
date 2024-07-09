@@ -6,7 +6,7 @@
 Welcome to OPFUNU's documentation!
 ==================================
 
-.. image:: https://img.shields.io/badge/release-1.0.2-yellow.svg
+.. image:: https://img.shields.io/badge/release-1.0.4-yellow.svg
    :target: https://github.com/thieu1995/opfunu/releases
 
 .. image:: https://img.shields.io/pypi/wheel/gensim.svg
@@ -74,7 +74,9 @@ traditional functions with different dimensions are implemented.
    :caption: Introduction:
 
    pages/quick_start.rst
-   pages/notes.rst
+   pages/integrated.rst
+   pages/visualization.rst
+   pages/categories.rst
 
 
 .. toctree::
