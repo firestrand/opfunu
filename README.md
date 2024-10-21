@@ -4,7 +4,7 @@
 ---
 
 
-[![GitHub release](https://img.shields.io/badge/release-1.0.2-yellow.svg)](https://github.com/thieu1995/opfunu/releases)
+[![GitHub release](https://img.shields.io/badge/release-1.0.4-yellow.svg)](https://github.com/thieu1995/opfunu/releases)
 [![Wheel](https://img.shields.io/pypi/wheel/gensim.svg)](https://pypi.python.org/pypi/opfunu) 
 [![PyPI version](https://badge.fury.io/py/opfunu.svg)](https://badge.fury.io/py/opfunu)
 ![PyPI - Python Version](https://img.shields.io/pypi/pyversions/opfunu.svg)
@@ -34,6 +34,28 @@ optimization benchmark functions. Contains all CEC competition functions from 20
 * **Dependencies:** numpy, matplotlib
 
 
+# Citation Request 
+
+Please include these citations if you plan to use this library:
+
+- LaTeX:
+
+```bibtex
+  @article{Van_Thieu_2024_Opfunu,
+      author = {Van Thieu, Nguyen},
+      title = {Opfunu: An Open-source Python Library for Optimization Benchmark Functions},
+      doi = {10.5334/jors.508},
+      journal = {Journal of Open Research Software},
+      month = {May},
+      year = {2024}
+  }
+```
+
+- APA:
+  
+  Van Thieu, N. (2024). Opfunu: An Open-source Python Library for Optimization Benchmark Functions. <i>Journal of Open Research Software</i>, <i>12</i>(1), 8. https://doi.org/10.5334/jors.508
+
+
 # Installation and Usage
 
 ### Install with pip
@@ -57,44 +79,13 @@ $ python
 >>> opfunu.CEC_DATABASE       # List all cec_based functions
 >>> opfunu.ALL_DATABASE       # List all functions in this library
 
->>> opfunu.get_functions_by_classname("CEC2014")
+>>> opfunu.get_functions_by_classname("MiShra04")
 >>> opfunu.get_functions_based_classname("2015")
->>> opfunu.get_functions_by_ndim(30)
->>> opfunu.get_functions_based_ndim(2)
->>> opfunu.get_all_named_functions()
->>> opfunu.get_all_cec_functions()
->>> opfunu.get_functions()
->>> opfunu.get_cecs()
-```
+>>> opfunu.get_functions_by_ndim(2)
+>>> opfunu.get_functions_based_ndim(50)
 
-### Lib's structure
-
-```code
-
-docs
-examples
-opfunu
-    cec_based
-        cec.py
-        cec2005.py
-        cec2008.py
-        ...
-        cec2021.py
-        cec2022.py
-    name_based
-        a_func.py
-        b_func.py
-        ...
-        y_func.py
-        z_func.py
-    utils
-        operator.py
-        validator.py
-        visualize.py
-    __init__.py
-    benchmark.py
-README.md
-setup.py
+>>> opfunu.get_name_based_functions(ndim=10, continuous=True)
+>>> opfunu.get_cec_based_functions(ndim=2)
 ```
 
 Let's go through some examples.
@@ -124,7 +115,6 @@ func.evaluate(func.create_solution())
 #### 2nd way
 
 ```python
-
 import opfunu
 
 funcs = opfunu.get_functions_by_classname("F12014")
@@ -135,57 +125,91 @@ func.evaluate(func.create_solution())
 
 all_funcs_2014 = opfunu.get_functions_based_classname("2014")
 print(all_funcs_2014)
-
 ```
+
+
+### How to draw 2D, 3D 
+
+Two ways if you want to draw functions that available in Opfunu.
+
+```python
+from opfunu.cec_based import F12010
+f0 = F12010()
+
+# Visualize opfunu function using method in object
+f0.plot_2d(selected_dims=(2, 3), n_points=300, ct_cmap="viridis", ct_levels=30, ct_alpha=0.7,
+           fixed_strategy="mean", fixed_values=None, title="Contour map of the F1 CEC 2010 function",
+           x_label=None, y_label=None, figsize=(10, 8), filename="2d-f12010", exts=(".png", ".pdf"), verbose=True)
+
+f0.plot_3d(selected_dims=(1, 6), n_points=500, ct_cmap="viridis", ct_levels=30, ct_alpha=0.7,
+           fixed_strategy="mean", fixed_values=None, title="3D visualization of the F1 CEC 2010 function",
+           x_label=None, y_label=None, figsize=(10, 8), filename="3d-f12010", exts=(".png", ".pdf"), verbose=True)
+
+## Visualize opfunu function using utility function
+from opfunu import draw_2d, draw_3d
+
+draw_2d(f0.evaluate, f0.lb, f0.ub, selected_dims=(2, 3), n_points=300)
+draw_3d(f0.evaluate, f0.lb, f0.ub, selected_dims=(2, 3), n_points=300)
+```
+
+<table>
+  <tr>
+    <td style="text-align: center;">
+      <img src=".github/img/2d-f12010.png" alt="F1-2010 CEC 2D" style="width: 100%;">
+      <p style="text-align: center;">F1-2010 CEC 2D</p>
+    </td>
+    <td style="text-align: center;">
+      <img src=".github/img/3d-f12010.png" alt="F1-2010 CEC 3D" style="width: 100%;">
+    <p style="text-align: center;">F1-2010 CEC 3D</p>
+    </td>
+  </tr>
+</table>
+
+
+### How to draw Latex
+
+Two ways if you want to draw latex equation. 
+
+```python
+from opfunu.cec_based import F12010
+from opfunu.name_based import Ackley02
+from opfunu.utils.visualize import draw_latex
+
+f0 = F12010()
+f1 = Ackley02()
+
+## Plot using function inside the object
+f0.plot_latex(f0.latex_formula, figsize=(8, 3), dpi=500, title="Latex equation", exts=(".png", ".pdf"), verbose=True)
+f1.plot_latex(f1.latex_formula_global_optimum, figsize=(8, 3), dpi=500, title="Global optimum", verbose=True)
+
+## Plot using module
+draw_latex(f0.latex_formula_bounds, title="Boundary for Function")
+draw_latex(f1.latex_formula_dimension, title=None)
+```
+
+
 
 For more usage examples please look at [examples](/examples) folder.
 
 
 
-# Get helps (questions, problems)
+# Contributing
 
-* Official source code repo: https://github.com/thieu1995/opfunu
-* Official document: https://opfunu.readthedocs.io/
-* Download releases: https://pypi.org/project/opfunu/
-* Issue tracker: https://github.com/thieu1995/opfunu/issues
-* Notable changes log: https://github.com/thieu1995/opfunu/blob/master/ChangeLog.md
-* Examples with different version: https://github.com/thieu1995/opfunu/blob/master/examples.md
-* Official chat group: https://t.me/+fRVCJGuGJg1mNDg1
-
-* This project also related to our another projects which are optimization and machine learning. Check it here:
-    * https://github.com/thieu1995/metaheuristics
-    * https://github.com/thieu1995/mealpy
-    * https://github.com/thieu1995/mafese
-    * https://github.com/thieu1995/pfevaluator
-    * https://github.com/thieu1995/MetaCluster
-    * https://github.com/thieu1995/enoppy
-    * https://github.com/thieu1995/permetrics
-    * https://github.com/aiir-team
+There are lots of ways how you can contribute to Permetrics's development, and you are welcome to join in! For example, 
+you can report problems or make feature requests on the [issues](/issues) pages. To facilitate contributions, 
+please check for the guidelines in the [CONTRIBUTING.md](/CONTRIBUTING.md) file.
 
 
-## Cite Us
+# Official channels 
 
-If you are using opfunu in your project, we would appreciate citations:
-
-```code
-@software{thieu_nguyen_2020_3711682,
-  author       = {Nguyen Van Thieu},
-  title        = {Opfunu: An Open-source Python Library for Optimization Benchmark Functions},
-  year         = 2020,
-  publisher    = {Zenodo},
-  doi          = {10.5281/zenodo.3620960},
-  url          = {https://doi.org/10.5281/zenodo.3620960.}
-}
-```
+* [Official source code repository](https://github.com/thieu1995/opfunu)
+* [Official document](https://opfunu.readthedocs.io/)
+* [Download releases](https://pypi.org/project/opfunu/) 
+* [Issue tracker](https://github.com/thieu1995/opfunu/issues) 
+* [Notable changes log](/ChangeLog.md)
+* [Official discussion group](https://t.me/+fRVCJGuGJg1mNDg1)
 
 
-## References 
+---
 
-```code
-1. http://benchmarkfcns.xyz/fcns
-2. https://en.wikipedia.org/wiki/Test_functions_for_optimization
-3. https://www.cs.unm.edu/~neal.holts/dga/benchmarkFunction/
-4. http://www.sfu.ca/~ssurjano/optimization.html
-5. A Literature Survey of Benchmark Functions For Global Optimization Problems (2013)
-6. Problem Definitions and Evaluation Criteria for the CEC 2014 Special Session and Competition on Single Objective Real-Parameter Numerical Optimization 
-```
+Developed by: [Thieu](mailto:nguyenthieu2102@gmail.com?Subject=Opfunu_QUESTIONS) @ 2023

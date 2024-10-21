@@ -1,15 +1,30 @@
-# Version 1.0.4
+# Version 1.0.5
 
 + Fix schaffer_f7_func to match the cec implementation and reference document
 + Fix zakharov_func to match the cec implementation and reference document
 + Added a direct conversion of the lunacek_bi_rastrigin_cec_func
 + Added tests for cec functions comparing outputs to the reference implementations
 ---------------------------------------------------------------------
+# Version 1.0.4
+
++ Fix p value in F10 and F17 of CEC-2017
++ Add plot_latex to Benchmark class.
++ User can use draw_latex from opfunu to draw their latex equation.
++ Update examples for draw latex function
+
+---------------------------------------------------------------------
+
 # Version 1.0.3
 
 + Optimized katsuura_func performance, at 1M ndim > 80x speedup
++ Add plot_2d, plot_3d to Benchmark class.
++ User can use draw_2d, draw_3d from opfunu to draw their function.
++ Add tutorial on how to integrate with other optimization frameworks like Mealpy, Opytimizer, Niapy
++ Update examples and update documentations
++ Update citation and paper (Got published at Journal of Open Research Software)
 
 ---------------------------------------------------------------------
+
 # Version 1.0.2
 
 + Fix modified_schwefel_func() in operator.py
